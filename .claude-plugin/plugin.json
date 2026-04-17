@@ -1,5 +1,18 @@
 {
   "name": "soldoc-harness",
   "version": "1.0.0",
-  "description": "Knowledge Base 기반 에이전트 팀 하네스"
+  "description": "Knowledge Base 기반 에이전트 팀 하네스. 프론트/백엔드 공통.",
+  "author": {
+    "name": "Soldoc",
+    "email": "dev@soldoc.co.kr"
+  },
+  "homepage": "https://github.com/hyeokju98/kb-dev-harness",
+  "repository": "https://github.com/hyeokju98/kb-dev-harness",
+  "keywords": [
+    "knowledge-base",
+    "agent-team",
+    "orchestration",
+    "code-review",
+    "refactoring"
+  ]
 }
