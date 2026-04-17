@@ -1,0 +1,26 @@
+{
+  "name": "soldoc-harness",
+  "version": "1.0.0",
+  "description": "Knowledge Base 기반 에이전트 팀 하네스",
+  "agents": [
+    "agents/planner.md",
+    "agents/domain-architect.md",
+    "agents/code-reviewer.md",
+    "agents/code-refactorer.md",
+    "agents/bug-debugger.md",
+    "agents/qa-expert.md"
+  ],
+  "skills": [
+    "skills/setup-kb",
+    "skills/orchestrator"
+  ],
+  "commands": [
+    "commands/start-task.md",
+    "commands/self-review.md"
+  ],
+  "references": [
+    "references/review-checklist.md",
+    "references/output-templates/planner-report.md",
+    "references/output-templates/changelog.md"
+  ]
+}
