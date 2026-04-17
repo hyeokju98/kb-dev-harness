@@ -4,6 +4,7 @@
   "description": "Knowledge Base 기반 에이전트 팀 하네스. 프론트/백엔드 공통.",
   "homepage": "https://github.com/hyeokju98/kb-dev-harness",
   "repository": "https://github.com/hyeokju98/kb-dev-harness",
+  "license": "MIT",
   "owner": {
     "name": "Soldoc",
     "email": "dev@soldoc.co.kr"

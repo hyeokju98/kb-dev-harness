@@ -8,6 +8,7 @@
   },
   "homepage": "https://github.com/hyeokju98/kb-dev-harness",
   "repository": "https://github.com/hyeokju98/kb-dev-harness",
+  "license": "MIT",
   "keywords": [
     "knowledge-base",
     "agent-team",
