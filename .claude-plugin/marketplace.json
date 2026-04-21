@@ -13,8 +13,8 @@
     {
       "name": "soldoc-harness",
       "source": "./",
-      "version": "1.0.0",
-      "description": "KB 구축 + 에이전트 팀 오케스트레이션 (planner/architect/reviewer/refactorer/debugger/qa)",
+      "version": "1.1.0",
+      "description": "KB 구축 + 에이전트 팀 오케스트레이션 (planner/architect/reviewer/refactorer/debugger/qa). QA는 테스트를 실제 실행하여 pass/fail 리턴.",
       "homepage": "https://github.com/hyeokju98/kb-dev-harness",
       "keywords": [
         "knowledge-base",

@@ -1,7 +1,7 @@
 {
   "name": "soldoc-harness",
-  "version": "1.0.0",
-  "description": "Knowledge Base 기반 에이전트 팀 하네스. 프론트/백엔드 공통.",
+  "version": "1.1.0",
+  "description": "Knowledge Base 기반 에이전트 팀 하네스. 프론트/백엔드 공통. planner/architect/reviewer/refactorer/debugger/qa 6종 + KB 구축/오케스트레이션 skill.",
   "author": {
     "name": "Soldoc",
     "email": "dev@soldoc.co.kr"
@@ -14,6 +14,11 @@
     "agent-team",
     "orchestration",
     "code-review",
-    "refactoring"
-  ]
+    "refactoring",
+    "debugging",
+    "qa"
+  ],
+  "agents": "./agents",
+  "commands": "./commands",
+  "skills": "./skills"
 }
