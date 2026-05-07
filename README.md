@@ -1,10 +1,10 @@
-# Soldoc Harness (`kb-dev-harness`)
+# HJ Teams (`kb-dev-harness`)
 
 Claude Code가 프로젝트를 이해하고 팀으로 작업할 수 있도록 Knowledge Base를 구축하는 플러그인.
 
 **한 줄 요약:** `/setup-kb` 한 번 실행하면 Claude가 프로젝트 아키텍처를 파악하고, 이후 기능 개발/리팩토링/버그 수정을 에이전트 팀으로 자동화합니다. QA 에이전트는 **실제 테스트를 실행**하고 pass/fail을 리턴합니다.
 
-> 레포명은 `kb-dev-harness`, 플러그인 식별자는 `soldoc-harness`입니다. 같은 것이며, 아래 설치 커맨드의 표기를 그대로 사용하세요.
+> 레포명은 `kb-dev-harness`, 플러그인 식별자는 `hj-teams`입니다. 같은 것이며, 아래 설치 커맨드의 표기를 그대로 사용하세요.
 
 ## 왜 필요한가
 
@@ -23,7 +23,7 @@ Claude Code는 매 세션마다 프로젝트를 처음부터 파악합니다. �
 
 ```
 /plugin marketplace add https://github.com/hyeokju98/kb-dev-harness.git
-/plugin install soldoc-harness@soldoc-harness
+/plugin install hj-teams@hj-teams
 ```
 
 설치 후 `/setup-kb`로 프로젝트 KB를 구축합니다.
@@ -35,12 +35,12 @@ Claude Code는 매 세션마다 프로젝트를 처음부터 파악합니다. �
 ```json
 {
   "extraKnownMarketplaces": {
-    "soldoc-harness": {
+    "hj-teams": {
       "source": { "source": "git", "url": "https://github.com/hyeokju98/kb-dev-harness.git" }
     }
   },
   "enabledPlugins": {
-    "soldoc-harness@soldoc-harness": true
+    "hj-teams@hj-teams": true
   }
 }
 ```
@@ -51,7 +51,7 @@ Claude Code는 매 세션마다 프로젝트를 처음부터 파악합니다. �
 
 ```
 /plugin marketplace add ~/Documents/dev/harness
-/plugin install soldoc-harness@soldoc-harness
+/plugin install hj-teams@hj-teams
 ```
 
 ## 초기 설정 (프로젝트당 1회)
@@ -137,7 +137,7 @@ Asana 티켓이나 Figma 링크도 전달 가능:
 ### 팀으로 개발 실행
 
 ```
-soldoc-orchestrator
+hj-orchestrator
 > 기능 개발: 비밀번호 정책 변경
 ```
 
@@ -157,7 +157,7 @@ qa (opus) → 테스트 작성 + 실제 실행 + pass/fail 리턴
 ### 리팩토링
 
 ```
-soldoc-orchestrator
+hj-orchestrator
 > 리팩토링: payment 모듈 정리
 ```
 
@@ -173,7 +173,7 @@ reviewer-post (opus) → 재리뷰
 ### 버그 수정
 
 ```
-soldoc-orchestrator
+hj-orchestrator
 > 버그: request_id dc50b69905664b52af09a35b16575588
 ```
 

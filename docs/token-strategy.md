@@ -1,6 +1,6 @@
 # Token Saving Strategy
 
-soldoc-harness가 멀티 에이전트 운영에서 소비하는 토큰을 줄이기 위한 설계 원칙.
+hj-teams가 멀티 에이전트 운영에서 소비하는 토큰을 줄이기 위한 설계 원칙.
 현재 하네스는 Team(A/B/C) 기반 협업 구조이며, 각 에이전트가 `CLAUDE.md / context.md / CONTEXT-MAP.md / history.md`를 중복 로딩하고 자연어 산출물을 주고받기 때문에 토큰 비용이 상승한다. 본 문서는 그 비용을 구조적으로 낮추는 10개 원칙과, 각 원칙을 하네스에 매핑한 적용안을 정의한다.
 
 ---

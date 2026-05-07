@@ -1,13 +1,24 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "soldoc-harness/planner-report",
+  "$id": "hj-teams/planner-report",
   "title": "Planner Report",
   "description": "planner 에이전트가 생성하는 영향 분석 레포트의 구조화 출력 스키마",
   "type": "object",
-  "required": ["_metadata", "run_id", "feature", "requirements", "as_is", "to_be", "impact", "risks"],
+  "required": [
+    "_metadata",
+    "run_id",
+    "feature",
+    "requirements",
+    "as_is",
+    "to_be",
+    "impact",
+    "risks"
+  ],
   "additionalProperties": false,
   "properties": {
-    "_metadata": { "$ref": "_metadata.schema.json" },
+    "_metadata": {
+      "$ref": "_metadata.schema.json"
+    },
     "run_id": {
       "type": "string",
       "pattern": "^[0-9]{8}-[0-9]{4}-[a-z0-9-]+$",
@@ -15,45 +26,103 @@
     },
     "feature": {
       "type": "object",
-      "required": ["name"],
+      "required": [
+        "name"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "source": { "enum": ["asana", "figma", "text"] },
-        "owner": { "type": "string" },
-        "status": { "type": "string" },
-        "due_date": { "type": "string", "format": "date" }
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "asana",
+            "figma",
+            "text"
+          ]
+        },
+        "owner": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "due_date": {
+          "type": "string",
+          "format": "date"
+        }
       }
     },
     "requirements": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["text", "alignment"],
+        "required": [
+          "text",
+          "alignment"
+        ],
         "properties": {
-          "text": { "type": "string" },
-          "alignment": { "enum": ["fit", "needs_review"] },
-          "alignment_reason": { "type": "string" }
+          "text": {
+            "type": "string"
+          },
+          "alignment": {
+            "enum": [
+              "fit",
+              "needs_review"
+            ]
+          },
+          "alignment_reason": {
+            "type": "string"
+          }
         }
       }
     },
     "as_is": {
       "type": "object",
       "properties": {
-        "apis": { "type": "array", "items": { "type": "string" } },
-        "models": { "type": "array", "items": { "type": "string" } },
-        "data_flow": { "type": "string" }
+        "apis": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_flow": {
+          "type": "string"
+        }
       }
     },
     "to_be": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["kind", "target", "change"],
+        "required": [
+          "kind",
+          "target",
+          "change"
+        ],
         "properties": {
-          "kind": { "enum": ["add", "modify", "delete"] },
-          "target": { "type": "string", "description": "파일경로::심볼 또는 테이블명" },
-          "change": { "type": "string" },
-          "note": { "type": "string" }
+          "kind": {
+            "enum": [
+              "add",
+              "modify",
+              "delete"
+            ]
+          },
+          "target": {
+            "type": "string",
+            "description": "파일경로::심볼 또는 테이블명"
+          },
+          "change": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
         }
       }
     },
@@ -61,19 +130,39 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["kind", "target", "detail"],
+        "required": [
+          "kind",
+          "target",
+          "detail"
+        ],
         "properties": {
-          "kind": { "enum": ["direct", "indirect", "compatibility"] },
+          "kind": {
+            "enum": [
+              "direct",
+              "indirect",
+              "compatibility"
+            ]
+          },
           "target": {
             "type": "string",
             "description": "파일경로::심볼:라인 또는 테이블명"
           },
-          "detail": { "type": "string" },
+          "detail": {
+            "type": "string"
+          },
           "evidence": {
             "type": "object",
             "properties": {
-              "method": { "enum": ["read", "grep", "graphify"] },
-              "pattern": { "type": "string" }
+              "method": {
+                "enum": [
+                  "read",
+                  "grep",
+                  "graphify"
+                ]
+              },
+              "pattern": {
+                "type": "string"
+              }
             }
           }
         }
@@ -81,11 +170,15 @@
     },
     "risks": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "open_questions": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     }
   }
 }

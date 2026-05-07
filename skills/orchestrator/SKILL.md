@@ -1,5 +1,5 @@
 ---
-name: soldoc-orchestrator
+name: hj-orchestrator
 description: "에이전트 팀 오케스트레이터. '기능 개발', '리팩토링', '버그' 시 사용."
 ---
 

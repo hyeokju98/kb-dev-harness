@@ -1,13 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "soldoc-harness/debug-result",
+  "$id": "hj-teams/debug-result",
   "title": "Debug Result",
   "description": "bug-debugger가 생성하는 디버깅 결과 스키마",
   "type": "object",
-  "required": ["_metadata", "run_id", "request", "error", "root_cause", "resolution"],
+  "required": [
+    "_metadata",
+    "run_id",
+    "request",
+    "error",
+    "root_cause",
+    "resolution"
+  ],
   "additionalProperties": false,
   "properties": {
-    "_metadata": { "$ref": "_metadata.schema.json" },
+    "_metadata": {
+      "$ref": "_metadata.schema.json"
+    },
     "run_id": {
       "type": "string",
       "pattern": "^[0-9]{8}-[0-9]{4}-[a-z0-9-]+$"
@@ -15,74 +24,142 @@
     "request": {
       "type": "object",
       "properties": {
-        "endpoint": { "type": "string" },
-        "method": { "type": "string" },
-        "occurred_at": { "type": "string", "format": "date-time" },
-        "context": { "type": "string" }
+        "endpoint": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "context": {
+          "type": "string"
+        }
       }
     },
     "error": {
       "type": "object",
-      "required": ["summary"],
+      "required": [
+        "summary"
+      ],
       "properties": {
-        "summary": { "type": "string" },
-        "exception": { "type": "string" },
-        "traceback": { "type": "string" }
+        "summary": {
+          "type": "string"
+        },
+        "exception": {
+          "type": "string"
+        },
+        "traceback": {
+          "type": "string"
+        }
       }
     },
     "log_flow": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["timestamp", "level", "message"],
+        "required": [
+          "timestamp",
+          "level",
+          "message"
+        ],
         "properties": {
-          "timestamp": { "type": "string", "format": "date-time" },
-          "level": { "enum": ["debug", "info", "warning", "error", "critical"] },
-          "source": { "type": "string" },
-          "message": { "type": "string" }
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "level": {
+            "enum": [
+              "debug",
+              "info",
+              "warning",
+              "error",
+              "critical"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
         }
       }
     },
     "root_cause": {
       "type": "object",
-      "required": ["location", "explanation"],
+      "required": [
+        "location",
+        "explanation"
+      ],
       "properties": {
         "location": {
           "type": "object",
-          "required": ["file"],
+          "required": [
+            "file"
+          ],
           "properties": {
-            "file": { "type": "string" },
-            "line": { "type": "integer", "minimum": 1 },
-            "symbol": { "type": "string" }
+            "file": {
+              "type": "string"
+            },
+            "line": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "symbol": {
+              "type": "string"
+            }
           }
         },
-        "explanation": { "type": "string" },
+        "explanation": {
+          "type": "string"
+        },
         "call_chain": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "graphify 또는 Grep으로 추적한 호출 체인"
         }
       }
     },
     "resolution": {
       "type": "object",
-      "required": ["direction"],
+      "required": [
+        "direction"
+      ],
       "properties": {
-        "direction": { "type": "string" },
-        "applied": { "type": "boolean" },
-        "diff": { "type": "string" }
+        "direction": {
+          "type": "string"
+        },
+        "applied": {
+          "type": "boolean"
+        },
+        "diff": {
+          "type": "string"
+        }
       }
     },
     "recurrence": {
       "type": "object",
-      "required": ["is_recurring"],
+      "required": [
+        "is_recurring"
+      ],
       "properties": {
-        "is_recurring": { "type": "boolean" },
+        "is_recurring": {
+          "type": "boolean"
+        },
         "previous_run_ids": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "history_excerpt": { "type": "string" }
+        "history_excerpt": {
+          "type": "string"
+        }
       }
     }
   }

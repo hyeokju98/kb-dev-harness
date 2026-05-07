@@ -1,13 +1,20 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "soldoc-harness/architect-design",
+  "$id": "hj-teams/architect-design",
   "title": "Architect Design",
   "description": "domain-architect가 생성하는 도메인 설계 결과 스키마",
   "type": "object",
-  "required": ["_metadata", "run_id", "domain_overview", "module_structure"],
+  "required": [
+    "_metadata",
+    "run_id",
+    "domain_overview",
+    "module_structure"
+  ],
   "additionalProperties": false,
   "properties": {
-    "_metadata": { "$ref": "_metadata.schema.json" },
+    "_metadata": {
+      "$ref": "_metadata.schema.json"
+    },
     "run_id": {
       "type": "string",
       "pattern": "^[0-9]{8}-[0-9]{4}-[a-z0-9-]+$"
@@ -17,30 +24,58 @@
       "description": "planner 레포트의 보완 사항. 누락된 간접 영향 등.",
       "items": {
         "type": "object",
-        "required": ["category", "detail"],
+        "required": [
+          "category",
+          "detail"
+        ],
         "properties": {
-          "category": { "enum": ["missed_indirect", "over_estimate", "under_estimate", "missing_event"] },
-          "detail": { "type": "string" },
-          "evidence": { "type": "string" }
+          "category": {
+            "enum": [
+              "missed_indirect",
+              "over_estimate",
+              "under_estimate",
+              "missing_event"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          }
         }
       }
     },
     "domain_overview": {
       "type": "object",
-      "required": ["name", "responsibility"],
+      "required": [
+        "name",
+        "responsibility"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "responsibility": { "type": "string" }
+        "name": {
+          "type": "string"
+        },
+        "responsibility": {
+          "type": "string"
+        }
       }
     },
     "module_structure": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["path", "role"],
+        "required": [
+          "path",
+          "role"
+        ],
         "properties": {
-          "path": { "type": "string" },
-          "role": { "type": "string" }
+          "path": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
         }
       }
     },
@@ -48,24 +83,40 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["entity", "fields"],
+        "required": [
+          "entity",
+          "fields"
+        ],
         "properties": {
-          "entity": { "type": "string" },
+          "entity": {
+            "type": "string"
+          },
           "fields": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["name", "type"],
+              "required": [
+                "name",
+                "type"
+              ],
               "properties": {
-                "name": { "type": "string" },
-                "type": { "type": "string" },
-                "constraint": { "type": "string" }
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "constraint": {
+                  "type": "string"
+                }
               }
             }
           },
           "relations": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
@@ -74,11 +125,26 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["from", "to", "kind"],
+        "required": [
+          "from",
+          "to",
+          "kind"
+        ],
         "properties": {
-          "from": { "type": "string" },
-          "to": { "type": "string" },
-          "kind": { "enum": ["import", "event", "api", "shared_util"] }
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "import",
+              "event",
+              "api",
+              "shared_util"
+            ]
+          }
         }
       }
     },
@@ -86,22 +152,35 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["system", "purpose"],
+        "required": [
+          "system",
+          "purpose"
+        ],
         "properties": {
-          "system": { "type": "string" },
-          "purpose": { "type": "string" }
+          "system": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          }
         }
       }
     },
     "migration_strategy": {
       "type": "object",
       "properties": {
-        "needed": { "type": "boolean" },
+        "needed": {
+          "type": "boolean"
+        },
         "steps": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "rollback": { "type": "string" }
+        "rollback": {
+          "type": "string"
+        }
       }
     }
   }
