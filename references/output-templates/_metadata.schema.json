@@ -36,6 +36,21 @@
       "type": "array",
       "items": { "enum": ["read", "grep", "graphify"] },
       "description": "근거 수집 방법 다중 선택"
+    },
+    "confidence": {
+      "type": "object",
+      "description": "LLM 확률 출력의 신뢰도 (자가 보고)",
+      "properties": {
+        "overall": { "type": "number", "minimum": 0, "maximum": 1 },
+        "method": {
+          "enum": ["self_reported", "self_consistency", "evidence_density"]
+        },
+        "low_confidence_fields": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "0.6 미만으로 검토 권고되는 필드 경로"
+        }
+      }
     }
   }
 }

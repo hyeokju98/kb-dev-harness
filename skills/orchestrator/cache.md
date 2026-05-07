@@ -15,6 +15,15 @@
 내용: 단계 산출물 + 메타(에이전트, 모델, ts)
 TTL: 동일 run_id 내 영구.
 
-## Anthropic Prompt Cache
-공통 시스템 프롬프트(공유 instruction)는 cache breakpoint 앞에 배치.
-요청별 변동 부분은 breakpoint 뒤. 5분 TTL.
+## Anthropic Prompt Cache (5분 TTL)
+
+### Prompt 구조 (breakpoint 위치)
+```
+[시스템] CLAUDE.md + agents/_common/* + agents/_techniques/*
+[CACHE BREAKPOINT 1]  ← 모든 에이전트 호출 공유
+[에이전트] {name}/role + context-budget + references + read-policy
+[CACHE BREAKPOINT 2]  ← 같은 에이전트 반복 호출 시 hit
+[작업] task_brief + upstream_summary + file_refs
+```
+
+측정은 `policy/cache-measurement.md` (목표 hit_rate 0.4+).

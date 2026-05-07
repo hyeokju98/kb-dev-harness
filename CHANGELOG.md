@@ -2,6 +2,54 @@
 
 본 문서는 [Keep a Changelog](https://keepachangelog.com/) 형식과 [Semantic Versioning](https://semver.org/)을 따른다.
 
+## [2.1.0] — 2026-05-07
+
+LLM 원리 기반 7개 보완. Selective Read + Self-Consistency + Confidence + Cache 측정 + Context ordering + file_refs 차단 + cutoff 인지.
+
+### Added
+- **Selective Read 인프라**:
+  - 6개 에이전트별 `read-policy.md` (sticky 항상 / 조건부 매칭 / recency 끝)
+  - 진입점 .md 6개를 selective Read 패턴으로 교체 ("하위 전부 Read" → read-policy 우선)
+- **공통 LLM 보완 룰** (`agents/_common/`):
+  - `context-ordering.md` — lost-in-the-middle 방어 (시작/끝 우선 배치)
+  - `file-refs-policy.md` — input package의 file_refs 자동 Read 금지
+  - `cutoff-awareness.md` — knowledge cutoff 이후 패턴 권고 회피
+  - `confidence-rule.md` — 자가 보고 신뢰도 산출 가이드
+- **Orchestrator 신규 정책**:
+  - `policy/self-consistency.md` — Critical 후보에 N=3 sampling + 다수결 (변동성 보완)
+  - `policy/cache-measurement.md` — `cost.json.totals.cache_hit_rate` 산정 (목표 0.4+)
+- **Schema 확장**:
+  - `_metadata.schema.json` + `confidence` (overall/method/low_confidence_fields)
+  - `review-result.schema.json` issues에 `confidence` + `self_consistency_votes`
+
+### Changed
+- `skills/orchestrator/cache.md` — Anthropic prompt cache breakpoint 위치 명시 (시스템/에이전트/작업 3-tier 구조)
+- `plugin.json` 2.0.0 → 2.1.0
+
+### LLM 원리 매핑
+| 보완 | 원리 |
+|------|------|
+| Selective Read | Attention dilution 회피 (무관 토큰 차단) |
+| Self-Consistency | 확률적 sampling 분산 측정 |
+| Confidence | 확신/정확도 비일치 보완 |
+| Prompt Cache 측정 | KV cache 재사용 검증 |
+| Context Ordering | Lost-in-the-middle 회피 |
+| file_refs 차단 | 중복 토큰 로드 방지 |
+| Cutoff 인지 | 학습 시점 동결 한계 |
+
+### 예상 효과 (실측 필요)
+- Selective Read + file_refs 차단: **추가 30~50% 토큰 절감**
+- Prompt Cache 측정: 반복 작업 hit rate ≥0.4 시 **추가 15~30%**
+- Self-Consistency: Critical false negative **30~50% 감소** (Critical 후보에 +5% 비용)
+- Confidence: 0.6 미만 자동 표시 → 사용자 검토 효율 향상
+
+### Validation
+- Atomic ≤200 / Grouped ≤800 통과
+- 8개 JSON Schema syntax 통과
+- 깨진 cross-reference 0건
+
+---
+
 ## [2.0.0] — 2026-05-07
 
 대규모 재구조 릴리스. 토큰 절감 10원칙 + atomic 분할 + 거버넌스/검증 인프라 도입.

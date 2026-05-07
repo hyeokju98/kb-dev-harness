@@ -46,6 +46,20 @@
               "method": { "enum": ["read", "grep", "graphify"] },
               "pattern": { "type": "string" }
             }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "이 issue 판정의 신뢰도. 0.6 미만은 검토 권고."
+          },
+          "self_consistency_votes": {
+            "type": "object",
+            "description": "Critical 후보에 self-consistency 적용 시 기록",
+            "properties": {
+              "n_samples": { "type": "integer", "minimum": 1 },
+              "agreement_ratio": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
           }
         }
       }
