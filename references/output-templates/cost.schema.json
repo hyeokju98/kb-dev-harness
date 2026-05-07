@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "soldoc-harness/cost",
+  "title": "Run Cost",
+  "description": "각 run_id의 토큰/비용/실행 메트릭. orchestrator phase-7에서 작성.",
+  "type": "object",
+  "required": ["run_id", "started_at", "ended_at", "team", "stages", "totals"],
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "pattern": "^[0-9]{8}-[0-9]{4}-[a-z0-9-]+$"
+    },
+    "started_at": { "type": "string", "format": "date-time" },
+    "ended_at": { "type": "string", "format": "date-time" },
+    "team": { "enum": ["A", "B", "C"] },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["agent", "model", "tokens_in", "tokens_out"],
+        "properties": {
+          "agent": { "type": "string" },
+          "model": { "enum": ["opus", "sonnet", "haiku"] },
+          "tokens_in": { "type": "integer", "minimum": 0 },
+          "tokens_out": { "type": "integer", "minimum": 0 },
+          "cache_read_tokens": { "type": "integer", "minimum": 0 },
+          "cache_write_tokens": { "type": "integer", "minimum": 0 },
+          "duration_ms": { "type": "integer", "minimum": 0 },
+          "retries": { "type": "integer", "minimum": 0 },
+          "escalated_from_haiku": { "type": "boolean" },
+          "cost_usd": { "type": "number", "minimum": 0 }
+        }
+      }
+    },
+    "totals": {
+      "type": "object",
+      "required": ["tokens_in", "tokens_out", "cost_usd"],
+      "properties": {
+        "tokens_in": { "type": "integer", "minimum": 0 },
+        "tokens_out": { "type": "integer", "minimum": 0 },
+        "cost_usd": { "type": "number", "minimum": 0 },
+        "duration_ms": { "type": "integer", "minimum": 0 },
+        "cache_hit_rate": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "properties": {
+        "status": { "enum": ["approved", "needs_fix", "partial", "aborted"] },
+        "qa_pass": { "type": "boolean" },
+        "review_status": { "enum": ["approved", "needs_fix"] }
+      }
+    }
+  }
+}

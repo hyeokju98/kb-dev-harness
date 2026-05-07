@@ -192,9 +192,9 @@ reviewer (opus) → 수정 코드 검증
 
 변경사항을 체크리스트 기준으로 리뷰하고, ORM 쿼리가 있으면 SQL 최적화도 검토합니다. 승인 시 `.claude-reviewed` 마커를 생성합니다(커밋 훅에서 "리뷰 완료" 확인용).
 
-## 재시도 상태 전이
+## 재시도 상태 전이 (P1: 최대 1회)
 
-reviewer/qa에서 문제가 발견되면 **적절한 단계로 되돌립니다** (최대 2회):
+reviewer/qa에서 문제가 발견되면 **적절한 단계로 되돌립니다** (token-strategy P1: max=1):
 
 | 실패 단계 | 되돌릴 대상 | 이유 |
 |----------|------------|------|
@@ -204,7 +204,7 @@ reviewer/qa에서 문제가 발견되면 **적절한 단계로 되돌립니다**
 | qa: 통합 정합성 불일치 | architect | 경계면 재설계 |
 | architect: planner 보완사항 다수 | planner | 영향 분석 재작성 |
 
-2회 후에도 실패하면 사용자에게 수동 개입 요청.
+1회 후에도 실패하면 부분 결과 + 미해결 이슈 목록 반환 후 사용자 개입 요청. 카운터는 `_workspace/{run_id}/.retry_count`.
 
 ## `_workspace/` 정책 (run_id)
 
@@ -228,7 +228,7 @@ _workspace/
 
 ## Knowledge Base가 하는 일
 
-에이전트들은 작업 전에 KB 파일을 읽어 프로젝트를 파악합니다. **각 에이전트는 자기 역할에 필요한 파일만** 읽습니다 (컨텍스트 예산 제어):
+에이전트들은 작업 전에 KB 파일을 읽어 프로젝트를 파악합니다. **자기 정의 디렉토리(`agents/{name}/`)는 전부 Read**(atomic 파일이라 비용 작음), **공유 KB는 부분 Read**(CONTEXT-MAP은 관련 도메인 섹션만, history는 tail 10건만):
 
 | 에이전트 | 읽는 것 | 읽지 않는 것 |
 |---------|--------|-------------|
@@ -253,7 +253,7 @@ _workspace/
 
 - **architect** → planner 영향 범위 검증, 누락/과대평가 명시
 - **developer** → architect 설계에 비효율 있으면 대안 제시
-- **reviewer** → "통과" 기본값 금지. **반드시 1개+ 개선 제안**
+- **reviewer** → Critical/Warning은 발견 시 반드시 보고, Info는 선택 (P1: nitpick 루프 방지)
 - **qa** → 테스트 실행 + architect ↔ developer 교차 비교
 
 ## 에이전트 구성
@@ -324,9 +324,48 @@ A: 권장합니다. `context.md`, `CONTEXT-MAP.md`, `directory.md`는 팀 공유
 A: 선택입니다. 티켓별 산출물을 팀 공유하고 싶으면 올리고, 로컬만 보존할 거면 `.gitignore`에 추가.
 
 **Q: QA가 실제로 테스트를 돌린다고?**
-A: 네. pytest/vitest/jest/gradle test 등을 프로젝트 환경에서 감지해 실행하고 pass/fail을 리턴합니다. FAIL이면 orchestrator가 developer로 되돌립니다 (최대 2회 재시도).
+A: 네. pytest/vitest/jest/gradle test 등을 프로젝트 환경에서 감지해 실행하고 pass/fail을 리턴합니다. FAIL이면 orchestrator가 developer로 되돌립니다 (P1: 최대 1회 재시도).
+
+## 출력 스키마 + 거버넌스 + 비용 측정
+
+각 산출물은 JSON Schema로 정의되며, `_metadata`(owner/sensitivity/retention)와 `cost.json`(토큰 측정)으로 거버넌스·모니터링도 강제합니다.
+
+| 산출물 | 스키마 |
+|--------|-------|
+| `01_planner_report` | `planner-report.schema.json` |
+| `02_changelog` | `changelog.schema.json` |
+| `03_architect_design` | `architect-design.schema.json` |
+| `04_review_result` | `review-result.schema.json` |
+| `05_qa_result` | `qa-result.schema.json` |
+| 디버깅 결과 | `debug-result.schema.json` |
+| 공통 메타 | `_metadata.schema.json` (모든 산출물 required) |
+| 비용 측정 | `cost.schema.json` (phase-7 자동) |
+
+`additionalProperties: false` + `references/scripts/validate-output.py` 검증 자동화 (phase-4 강제).
+
+## 디렉토리 구조 (2-tier 파일 정책)
+
+`docs/file-size-policy.md` 참조. **Atomic ≤200자**(rules/examples/policy 단위 선택), **Grouped ≤800자**(같이 읽히는 묶음).
+
+```
+agents/{name}.md                ← 슬림 진입점 (frontmatter + 1줄)
+agents/{name}/
+├── role.md / context-budget.md / procedure.md / output-format.md
+├── references.md                ← 공통+기법+스키마 통합 포인터
+├── rules/                       ← atomic 룰 (≤200자)
+├── policy/                      ← P1 정책 (output-cap, diff-only)
+├── examples/few-shot/           ← atomic 예시
+├── examples/cot.md              ← reasoning + zero-shot 묶음
+└── examples/art/flow.md
+└── schema.md                    ← JSON 스키마 포인터
+```
+
+skills와 commands도 동일한 패턴.
 
 ## 참고 문서
 
-- [`docs/kb-schema.md`](docs/kb-schema.md) — KB 파일 공식 스키마 (context / CONTEXT-MAP / directory / history)
+- [`docs/token-strategy.md`](docs/token-strategy.md) — 토큰 절감 10원칙 + P1~P4 로드맵
+- [`docs/adr-vector-kb.md`](docs/adr-vector-kb.md) — Vector KB 도입 보류 결정 + 재검토 트리거
+- [`docs/kb-schema.md`](docs/kb-schema.md) — KB 파일 스키마 (context / CONTEXT-MAP / directory / history)
 - [`docs/workspace-schema.md`](docs/workspace-schema.md) — `_workspace/{run_id}/` 산출물 구조
+- [`agents/_techniques/`](agents/_techniques/) — Few-shot, CoT, ART, Multimodal CoT 기법 정의

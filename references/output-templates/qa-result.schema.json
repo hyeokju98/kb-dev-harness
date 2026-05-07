@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "soldoc-harness/qa-result",
+  "title": "QA Result",
+  "description": "qa-expert가 생성하는 테스트 작성+실행 결과 + 통합 정합성 검증 스키마",
+  "type": "object",
+  "required": ["_metadata", "run_id", "tests_written", "execution", "conclusion"],
+  "additionalProperties": false,
+  "properties": {
+    "_metadata": { "$ref": "_metadata.schema.json" },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[0-9]{8}-[0-9]{4}-[a-z0-9-]+$"
+    },
+    "tests_written": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "cases"],
+        "properties": {
+          "file": { "type": "string" },
+          "cases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "kind"],
+              "properties": {
+                "name": { "type": "string" },
+                "kind": { "enum": ["happy_path", "edge_case", "boundary", "error_case"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "required": ["runner", "passed", "failed"],
+      "properties": {
+        "runner": { "enum": ["pytest", "vitest", "jest", "gradle", "django"] },
+        "command": { "type": "string" },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "skipped": { "type": "integer", "minimum": 0 },
+        "duration_seconds": { "type": "number" }
+      }
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["test_name", "tail_output"],
+        "properties": {
+          "test_name": { "type": "string" },
+          "tail_output": {
+            "type": "string",
+            "description": "테스트 실패 출력의 마지막 30줄"
+          },
+          "suspected_cause": {
+            "type": "object",
+            "properties": {
+              "file": { "type": "string" },
+              "line": { "type": "integer", "minimum": 1 },
+              "rationale": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "integration_check": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["boundary", "status"],
+        "properties": {
+          "boundary": {
+            "enum": [
+              "request_param_to_validator",
+              "validator_to_business",
+              "business_to_serializer",
+              "url_to_handler"
+            ]
+          },
+          "status": { "enum": ["match", "mismatch"] },
+          "left": { "type": "string" },
+          "right": { "type": "string" },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "conclusion": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["pass", "fail"] },
+        "next_action": {
+          "enum": ["approved", "developer_rework", "architect_rework"],
+          "description": "FAIL 시 retry-state-transition 규칙에 따라"
+        }
+      }
+    }
+  }
+}
