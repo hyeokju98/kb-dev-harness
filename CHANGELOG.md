@@ -40,7 +40,7 @@ LLM 원리 기반 7개 보완. Selective Read + Self-Consistency + Confidence + 
 ### 예상 효과 (실측 필요)
 - Selective Read + file_refs 차단: **추가 30~50% 토큰 절감**
 - Prompt Cache 측정: 반복 작업 hit rate ≥0.4 시 **추가 15~30%**
-- Self-Consistency: Critical false negative **30~50% 감소** (Critical 후보에 +5% 비용)
+- Self-Consistency: Critical false negative **30~50% 감소**. 비용은 Critical 발견 시 reviewer 단계 +100~200% (2~3회 호출), Critical 미발견 시 0%.
 - Confidence: 0.6 미만 자동 표시 → 사용자 검토 효율 향상
 
 ### Validation

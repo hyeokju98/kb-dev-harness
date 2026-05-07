@@ -1,9 +1,8 @@
-# Confidence 산출 (자가 보고)
+# Confidence
 
-산출물에 confidence 표기:
+method별:
+- self_reported: 근거≥3→0.9+ / 1근거→0.7 / 추론→≤0.4
+- self_consistency: agreement_ratio
+- evidence_density: evidence/전체
 
-- evidence 다수(≥3 fail-safe 근거): **0.9+**
-- 단일 근거 + 패턴 일치: **0.7**
-- 추론만, 직접 확인 없음: **≤0.4**
-
-0.6 미만 항목은 검토 권고 표시.
+0.6 미만 → low_confidence_fields.

@@ -14,8 +14,11 @@
 - `agents/{N}/rules/*.md` — 각 룰은 독립적, 선택적 적용
 - `agents/{N}/policy/*.md` — 정책 항목별 분리 (output-cap, diff-only)
 - `agents/{N}/examples/few-shot/*.md` — 각 예시는 독립적
-- `skills/orchestrator/teams/*.md` — Team별 분리 (이미 atomic)
+- `agents/_common/*.md` — 공유 instruction (각 항목 한 개 룰)
+- `agents/_techniques/*.md` — 기법 정의 (각 기법 한 개)
+- `skills/orchestrator/teams/*.md` — Team별 분리
 - `skills/orchestrator/phases/*.md` — Phase 단계별 분리
+- `skills/orchestrator/policy/*.md` — 정책 항목별 분리
 
 ## Grouped로 통합한 영역 (이번 변경)
 | 변경 전 | 변경 후 |
