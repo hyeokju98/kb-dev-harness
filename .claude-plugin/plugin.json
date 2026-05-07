@@ -3,8 +3,8 @@
   "version": "2.1.0",
   "description": "KB 기반 에이전트 팀 하네스. atomic 분할 + 토큰 절감 10원칙 + JSON Schema 검증 + 거버넌스 메타데이터 + 비용 측정. planner/architect/reviewer/refactorer/debugger/qa + KB/orchestrator skill.",
   "author": {
-    "name": "Soldoc",
-    "email": "dev@soldoc.co.kr"
+    "name": "hyeokju98",
+    "email": "nugulhie@gmail.com"
   },
   "homepage": "https://github.com/hyeokju98/kb-dev-harness",
   "repository": "https://github.com/hyeokju98/kb-dev-harness",
