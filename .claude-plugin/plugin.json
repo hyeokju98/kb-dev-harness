@@ -17,8 +17,5 @@
     "refactoring",
     "debugging",
     "qa"
-  ],
-  "agents": "./agents",
-  "commands": "./commands",
-  "skills": "./skills"
+  ]
 }
