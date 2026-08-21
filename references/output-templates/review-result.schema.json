@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hj-teams/review-result",
+  "title": "Review Result",
+  "description": "code-reviewer가 생성하는 리뷰 결과 스키마",
+  "type": "object",
+  "required": [
+    "_metadata",
+    "run_id",
+    "changed_files",
+    "issues",
+    "conclusion"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "_metadata": {
+      "$ref": "_metadata.schema.json"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[0-9]{8}-[0-9]{4}-[a-z0-9-]+$"
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "severity",
+          "rule",
+          "location",
+          "message"
+        ],
+        "properties": {
+          "severity": {
+            "enum": [
+              "critical",
+              "warning",
+              "info"
+            ]
+          },
+          "rule": {
+            "type": "string",
+            "description": "agents/code-reviewer/rules/ 파일명 (확장자 제외)"
+          },
+          "location": {
+            "type": "object",
+            "required": [
+              "file"
+            ],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "line": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "symbol": {
+                "type": "string"
+              }
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "suggestion": {
+            "type": "string"
+          },
+          "current": {
+            "type": "string"
+          },
+          "proposed": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "read",
+                  "grep",
+                  "graphify"
+                ]
+              },
+              "pattern": {
+                "type": "string"
+              }
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "이 issue 판정의 신뢰도. 0.6 미만은 검토 권고."
+          },
+          "self_consistency_votes": {
+            "type": "object",
+            "description": "Critical 후보에 self-consistency 적용 시 기록",
+            "properties": {
+              "n_samples": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "agreement_ratio": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "architecture_alignment": {
+      "type": "object",
+      "properties": {
+        "fits_layer_pattern": {
+          "type": "boolean"
+        },
+        "follows_conventions": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "summary": {
+      "type": "string"
+    },
+    "conclusion": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "approved",
+            "needs_fix"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Critical 0 + 제안 없이 승인 시 반드시 명시"
+        }
+      }
+    }
+  }
+}

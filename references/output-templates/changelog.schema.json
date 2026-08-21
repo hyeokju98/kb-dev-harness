@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hj-teams/changelog",
+  "title": "Changelog",
+  "description": "planner가 생성하는 서비스 관점 변경 이력 스키마",
+  "type": "object",
+  "required": [
+    "_metadata",
+    "date",
+    "title",
+    "summary",
+    "feature_changes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "_metadata": {
+      "$ref": "_metadata.schema.json"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "title": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string",
+      "description": "변경 목적 한 줄 요약"
+    },
+    "feature_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "description"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "added",
+              "modified",
+              "deleted"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "as_is": {
+            "type": "string"
+          },
+          "to_be": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "api_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "method",
+          "endpoint",
+          "change"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "added",
+              "modified",
+              "deleted"
+            ]
+          },
+          "method": {
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          },
+          "endpoint": {
+            "type": "string"
+          },
+          "change": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "data_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "table",
+          "kind",
+          "content"
+        ],
+        "properties": {
+          "table": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "added",
+              "modified",
+              "deleted"
+            ]
+          },
+          "content": {
+            "type": "string"
+          },
+          "migration": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "impact": {
+      "type": "object",
+      "properties": {
+        "frontend": {
+          "type": "string"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "external": {
+          "type": "string"
+        },
+        "backward_compatible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "asana": {
+          "type": "string",
+          "format": "uri"
+        },
+        "figma": {
+          "type": "string",
+          "format": "uri"
+        },
+        "pr": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}

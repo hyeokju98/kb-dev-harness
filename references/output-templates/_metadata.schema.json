@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hj-teams/_metadata",
+  "title": "Output Metadata",
+  "description": "모든 에이전트 산출물에 부착되는 거버넌스 메타데이터",
+  "type": "object",
+  "required": [
+    "owner",
+    "sensitivity",
+    "retention_days",
+    "created_by_agent",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "owner": {
+      "type": "string",
+      "description": "산출물 책임자 식별자 (사용자 이메일 또는 팀 핸들)"
+    },
+    "sensitivity": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ],
+      "description": "데이터 분류"
+    },
+    "retention_days": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "보관 기간(일). 0=즉시 삭제 가능, 미정의=무기한"
+    },
+    "created_by_agent": {
+      "type": "string",
+      "description": "생성 에이전트 식별자 (planner, code-reviewer 등)"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "model": {
+      "enum": [
+        "opus",
+        "sonnet",
+        "haiku"
+      ],
+      "description": "사용된 모델"
+    },
+    "evidence_methods": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "read",
+          "grep",
+          "graphify"
+        ]
+      },
+      "description": "근거 수집 방법 다중 선택"
+    },
+    "confidence": {
+      "type": "object",
+      "description": "LLM 확률 출력의 신뢰도 (자가 보고)",
+      "properties": {
+        "overall": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "method": {
+          "enum": [
+            "self_reported",
+            "self_consistency",
+            "evidence_density"
+          ]
+        },
+        "low_confidence_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "0.6 미만으로 검토 권고되는 필드 경로"
+        }
+      }
+    }
+  }
+}

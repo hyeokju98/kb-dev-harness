@@ -1,0 +1,19 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python (validate-output.py 환경)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 하네스 런타임 산출물 (각 프로젝트가 결정)
+# _workspace/  # 일반적으로 보존 권장 — 필요 시 프로젝트별 추가

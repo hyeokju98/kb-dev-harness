@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hj-teams/architect-design",
+  "title": "Architect Design",
+  "description": "domain-architect가 생성하는 도메인 설계 결과 스키마",
+  "type": "object",
+  "required": [
+    "_metadata",
+    "run_id",
+    "domain_overview",
+    "module_structure"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "_metadata": {
+      "$ref": "_metadata.schema.json"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[0-9]{8}-[0-9]{4}-[a-z0-9-]+$"
+    },
+    "planner_supplements": {
+      "type": "array",
+      "description": "planner 레포트의 보완 사항. 누락된 간접 영향 등.",
+      "items": {
+        "type": "object",
+        "required": [
+          "category",
+          "detail"
+        ],
+        "properties": {
+          "category": {
+            "enum": [
+              "missed_indirect",
+              "over_estimate",
+              "under_estimate",
+              "missing_event"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "domain_overview": {
+      "type": "object",
+      "required": [
+        "name",
+        "responsibility"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "responsibility": {
+          "type": "string"
+        }
+      }
+    },
+    "module_structure": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "role"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "data_model": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "entity",
+          "fields"
+        ],
+        "properties": {
+          "entity": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "type"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "constraint": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "kind"
+        ],
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "import",
+              "event",
+              "api",
+              "shared_util"
+            ]
+          }
+        }
+      }
+    },
+    "external_integrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "system",
+          "purpose"
+        ],
+        "properties": {
+          "system": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "migration_strategy": {
+      "type": "object",
+      "properties": {
+        "needed": {
+          "type": "boolean"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rollback": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
